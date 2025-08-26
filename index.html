@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GastroPlace - Современное заведение</title>
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
+    <style>
+        /* Обновленные стили с заменой видео на фото */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+            font-size: 18px;
+            overflow-x: hidden;
+            background-color: #1E5050;
+            position: relative;
+        }
+        
+        /* Фоновое изображение вместо видео */
+        .tm-bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1000;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                       url('img/restaurant-bg.jpg') center/cover no-repeat;
+        }
+        
+        /* Убираем элементы управления видео */
+        #tm-video-control-button {
+            display: none;
+        }
+        
+        /* Остальные стили остаются без изменений */
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+        
+        nav > ul > li { list-style: none; }
+        
+        a { 
+            color: #3CF;
+            text-decoration: none;
+            transition: all 0.3s ease; 
+        }
+        
+        p { 
+            line-height: 1.8; 
+            margin-top: 0;
+        }
+        
+        h2 { margin-top: 0; }
+        
+        .tm-container { padding: 30px; }
+        
+        .tm-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .tm-left,
+        .tm-right {
+            width: 50%;
+        }
+        
+        .tm-left-inner { position: fixed; }
+        
+        .tm-site-header {
+            background-color: white;
+            color: #099;
+            width: 100%;
+            height: 160px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;   
+        }
+        
+        .tm-site-logo { margin-right: 30px; }
+        
+        .tm-site-name {
+            font-size: 2.2rem;
+            font-style: italic;    
+        }
+        
+        .tm-left-inner {
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .tm-site-nav-ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .tm-page-nav-item { margin-top: 20px; }
+        
+        .tm-page-link {
+            min-width: 240px;
+            height: 100px;
+            background-color: white;
+            color: #099;
+            display: flex;
+            text-decoration: none;
+            align-items: center;      
+            font-size: 1.2rem;
+        }
+        
+        .tm-page-link:hover,
+        .tm-page-link.active {
+            background-color: #099;
+            color: white;
+        }
+        
+        .tm-page-link-icon {
+            margin-right: 25px;
+            margin-left: 25px;
+            font-size: 1.5rem;
+        }
+        
+        .tm-black-bg {
+            background-color: rgba(0,0,0,0.6);
+            color: white;
+        }
+        
+        .tm-drinks-nav > ul > li { display: inline-block; }
+        
+        .tm-drinks-nav > ul > li > a {
+            color: white;
+            font-size: 1.2rem;
+            padding-top: 15px;
+            padding-bottom: 5px;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tm-drinks-nav { height: 80px; }
+        .tm-main { max-width: 660px; }
+        
+        .tm-drinks-nav > ul {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            height: 100%;
+        }
+        
+        .tm-drinks-nav > ul > li a.active,
+        .tm-drinks-nav > ul > li a:hover {
+            color: #96FEFF;
+            border-bottom: 4px solid #96FEFF;
+        }
+        
+        .tm-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .tm-list-item-2 { align-items: flex-start; }
+        
+        .tm-list-item-img {
+            margin-right: 20px;
+            width: 160px;
+            height: 160px;
+            background-color: #099;
+        }
+        
+        .tm-list-item-img-big {
+            margin-right: 25px;
+            width: 200px;
+            height: 200px;
+        }
+        
+        .tm-list-item-text {
+            padding: 20px 25px;
+            flex: 1;
+        }
+        
+        .tm-list-item-text-2 { flex: 1; }
+        
+        .tm-list-item-name {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0;
+        }
+        
+        .tm-list-item-price { color: #96FEFF; }
+        .tm-site-footer { margin-top: 15px; }
+        
+        .tm-footer-text {
+            padding: 10px 65px 10px 20px;
+            display: inline-block;
+        }
+        
+        .tm-footer-link { color: white; }
+        .tm-tab-content { animation: fadeEffect 1s; }
+        .tm-page-content { animation: fadeEffect 1s; }
+        
+        .tm-text-primary { color: #3CC; }
+        .tm-mb-20 { margin-bottom: 20px; }
+        .tm-mb-30 { margin-bottom: 30px; }
+        .tm-img-right { 
+            margin-left: 30px; 
+            margin-right: 0;
+        }
+        
+        /* Go from zero to full opacity */
+        @keyframes fadeEffect {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
+        }
+        
+        /* About */
+        .tm-about-box-1 { padding: 40px 30px 50px 0; }
+        .tm-about-box-2 { padding: 50px 40px 30px; }
+        .tm-about-header { margin-left: 220px; }
+        
+        /* Special */
+        .tm-special-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+        }
+        
+        .tm-special-item {
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .tm-special-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .tm-special-item-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .tm-special-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .tm-special-item:hover .tm-special-item-image img {
+            transform: scale(1.05);
+        }
+        
+        .tm-special-item-description {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .tm-special-item-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #FFD700;
+        }
+        
+        .tm-special-item-text {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+        
+        /* Contact */
+        .tm-contact-text-container {
+            padding: 45px 50px;
+            margin-bottom: 20px;    
+        }
+        
+        .tm-contact-form-container {
+            max-width: 460px;
+            padding: 40px 50px;
+            box-sizing: border-box;
+        }
+        
+        .tm-form-group { margin-bottom: 25px; }
+        
+        .tm-form-control {
+            display: block;
+            box-sizing: border-box;
+            width: 100%;
+            padding: 15px;
+            font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #fff;
+            background-color: transparent;
+            background-clip: padding-box;
+            border: 0;
+            border-bottom: 1px solid white;
+        }
+        
+        .tm-form-control::-webkit-input-placeholder { color: white; } /* Edge */  
+        .tm-form-control:-ms-input-placeholder { color: white; } /* Internet Explorer 10-11 */  
+        .tm-form-control::placeholder { color: white; }
+        
+        .tm-btn-primary {
+            color: #099;
+            background-color: white;
+            border: 0;
+            padding: 12px 40px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.3s ease; 
+        }
+        
+        .tm-btn-primary:hover {
+            color: white;
+            background-color: #099;
+        }
+        
+        .tm-align-right {
+            display: block;
+            margin-left: auto;
+            margin-right: 0;
+        }
+        
+        /* Адаптивность для мобильных устройств */
+        @media screen and (max-width: 768px) {
+            .tm-special-items {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .tm-special-item-image {
+                height: 180px;
+            }
+            
+            .tm-special-item-title {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .tm-special-item-image {
+                height: 160px;
+            }
+            
+            .tm-special-item-description {
+                padding: 15px;
+            }
+            
+            .tm-special-item-title {
+                font-size: 1.1rem;
+            }
+            
+            .tm-special-item-text {
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 1130px) and (min-width: 992px) {
+            .tm-left-inner { max-width: 380px; }
+            .tm-site-name { font-size: 2.6rem; }
+            .tm-site-logo { margin-right: 20px; }
+            .tm-page-link { width: 100%; }
+            .tm-page-link-icon { margin-right: 15px; }
+            .tm-left { width: 45%; }
+            .tm-right { width: 55%; }
+        }
+        
+        @media (max-width: 991px) {
+            .tm-left-inner { position: static; }
+            .tm-left, .tm-right { width: 100%; }
+            .tm-left { margin-bottom: 50px; }
+            .tm-row { display: block; }
+        }
+        
+        @media (max-width: 574px) {
+            .tm-site-nav-ul { display: block; }
+        }
+        
+        @media (max-width: 550px) and (min-width: 501px) {
+            .tm-list-item-img-big {
+                width: 160px;
+                height: 160px;
+            }
+        
+            .tm-about-header { margin-left: 180px; }
+        }
+        
+        @media (max-width: 500px) {
+            .tm-about-header { margin-left: 0; }
+            .tm-list-item-2 { flex-direction: column; }
+            .tm-about-box-1 { padding-left: 30px; }
+        
+            .tm-list-item-img-big {
+                margin-right: 0;
+                margin-bottom: 25px;
+            }
+        
+            .tm-img-right { margin-left: 0; }
+        }
+        
+        @media (max-width: 479px) {
+            .tm-site-name { font-size: 2.6rem; }
+            .tm-site-logo { margin-right: 20px; }
+        
+            .tm-list-item {
+                flex-direction: column;
+                margin-top: 40px;     
+            }
+        
+            .tm-list-item-img {
+                margin-right: 0;
+                margin-bottom: 15px;        
+            }
+        
+            .tm-drinks-nav { height: auto; }
+        
+            .tm-drinks-nav > ul {
+                flex-direction: column;
+                padding: 15px;
+            }
+        
+            .tm-drinks-nav > ul > li { margin-bottom: 10px; }
+            .tm-drinks-nav > ul > li > a { display: block; }
+        }
+    </style>
+</head>
+<body>
+  <!-- Фоновое изображение вместо видео -->
+  <div class="tm-bg-overlay"></div>
+  
+  <div class="tm-container">
+    <div class="tm-row">
+      <!-- Шапка сайта -->
+      <div class="tm-left">
+        <div class="tm-left-inner">
+          <div class="tm-site-header">
+            <i class="fas fa-utensils fa-3x tm-site-logo"></i>
+            <h1 class="tm-site-name">GastroPlace</h1>
+          </div>
+          <nav class="tm-site-nav">
+            <ul class="tm-site-nav-ul">
+              <li class="tm-page-nav-item">
+                <a href="#menu" class="tm-page-link active">
+                  <i class="fas fa-book tm-page-link-icon"></i>
+                  <span>Меню</span>
+                </a>
+              </li>
+              <li class="tm-page-nav-item">
+                <a href="#about" class="tm-page-link">
+                  <i class="fas fa-users tm-page-link-icon"></i>
+                  <span>О нас</span>
+                </a>
+              </li>
+              <li class="tm-page-nav-item">
+                <a href="#special" class="tm-page-link">
+                  <i class="fas fa-star tm-page-link-icon"></i>
+                  <span>Акции</span>
+                </a>
+              </li>
+              <li class="tm-page-nav-item">
+                <a href="#contact" class="tm-page-link">
+                  <i class="fas fa-comments tm-page-link-icon"></i>
+                  <span>Контакты</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>        
+      </div>
+      <div class="tm-right">
+        <main class="tm-main">
+          <div id="menu" class="tm-page-content">
+            <!-- Страница меню -->
+            <nav class="tm-black-bg tm-drinks-nav">
+              <ul>
+                <li>
+                  <a href="#" class="tm-tab-link active" data-id="main">Основное</a>
+                </li>
+                <li>
+                  <a href="#" class="tm-tab-link" data-id="drinks">Напитки</a>
+                </li>
+                <li>
+                  <a href="#" class="tm-tab-link" data-id="desserts">Десерты</a>
+                </li>
+              </ul>
+            </nav>
+
+            <div id="main" class="tm-tab-content">
+              <div class="tm-list">
+                <div class="tm-list-item">          
+                  <img src="img/dish-01.jpg" alt="Основное блюдо 1" class="tm-list-item-img">
+                  <div class="tm-black-bg tm-list-item-text">
+                    <h3 class="tm-list-item-name">Стейк из лосося<span class="tm-list-item-price">890 руб.</span></h3>
+                    <p class="tm-list-item-description">Нежный стейк с хрустящей корочкой и овощами гриль.</p>
+                  </div>
+                </div>
+                <div class="tm-list-item">          
+                  <img src="img/dish-02.jpg" alt="Основное блюдо 2" class="tm-list-item-img">
+                  <div class="tm-black-bg tm-list-item-text">
+                    <h3 class="tm-list-item-name">Паста Карбонара<span class="tm-list-item-price">650 руб.</span></h3>
+                    <p class="tm-list-item-description">Классическая итальянская паста с беконом и сыром пармезан.</p>
+                  </div>
+                </div>
+                <div class="tm-list-item">          
+                  <img src="img/dish-03.jpg" alt="Основное блюдо 3" class="tm-list-item-img">
+                  <div class="tm-black-bg tm-list-item-text">
+                    <h3 class="tm-list-item-name">Салат Цезарь<span class="tm-list-item-price">550 руб.</span></h3>
+                    <p class="tm-list-item-description">Свежий салат с курицей, крутонами и фирменным соусом.</p>
+                  </div>
+                </div>                         
+              </div>
+            </div> 
+
+            <div id="drinks" class="tm-tab-content">
+              <div class="tm-list">
+                <div class="tm-list-item">          
+                  <img src="img/drink-01.jpg" alt="Напиток 1" class="tm-list-item-img">
+                  <div class="tm-black-bg tm-list-item-text">
+                    <h3 class="tm-list-item-name">Крафтовое пиво<span class="tm-list-item-price">450 руб.</span></h3>
+                    <p class="tm-list-item-description">Свежее крафтовое пиво местной пивоварни.</p>              
+                  </div>
+                </div>
+                <div class="tm-list-item">          
+                  <img src="img/drink-02.jpg" alt="Напиток 2" class="tm-list-item-img">
+                  <div class="tm-black-bg tm-list-item-text">
+                    <h3 class="tm-list-item-name">Мохито<span class="tm-list-item-price">550 руб.</span></h3>
+                    <p class="tm-list-item-description">Освежающий коктейль с мятой и лаймом.</p>                    
+                  </div>
+                </div>
+                <div class="tm-list-item">          
+                  <img src="img/drink-03.jpg" alt="Напиток 3" class="tm-list-item-img">
+                  <div class="tm-black-bg tm-list-item-text">
+                    <h3 class="tm-list-item-name">Вино красное<span class="tm-list-item-price">350 руб./бокал</span></h3>
+                    <p class="tm-list-item-description">Отборные красные вина из Италии и Франции.</p>              
+                  </div>
+                </div>                        
+              </div>
+            </div>
+
+            <div id="desserts" class="tm-tab-content">
+              <div class="tm-list">
+                <div class="tm-list-item">          
+                  <img src="img/dessert-01.jpg" alt="Десерт 1" class="tm-list-item-img">
+                  <div class="tm-black-bg tm-list-item-text">
+                    <h3 class="tm-list-item-name">Тирамису<span class="tm-list-item-price">450 руб.</span></h3>
+                    <p class="tm-list-item-description">Классический итальянский десерт с кофе и маскарпоне.</p>              
+                  </div>
+                </div>
+                <div class="tm-list-item">          
+                  <img src="img/dessert-02.jpg" alt="Десерт 2" class="tm-list-item-img">
+                  <div class="tm-black-bg tm-list-item-text">
+                    <h3 class="tm-list-item-name">Чизкейк<span class="tm-list-item-price">480 руб.</span></h3>
+                    <p class="tm-list-item-description">Нежный чизкейк с ягодным соусом.</p>                    
+                  </div>
+                </div>
+                <div class="tm-list-item">          
+                  <img src="img/dessert-03.jpg" alt="Десерт 3" class="tm-list-item-img">
+                  <div class="tm-black-bg tm-list-item-text">
+                    <h3 class="tm-list-item-name">Мороженое<span class="tm-list-item-price">350 руб.</span></h3>
+                    <p class="tm-list-item-description">Домашнее мороженое с различными топпингами.</p>              
+                  </div>
+                </div>              
+              </div>
+            </div>
+            <!-- конец страницы меню -->
+          </div>
+
+          <!-- Страница О нас -->
+          <div id="about" class="tm-page-content">
+            <div class="tm-black-bg tm-mb-20 tm-about-box-1">              
+              <h2 class="tm-text-primary tm-about-header">О нашем заведении</h2>
+              <div class="tm-list-item tm-list-item-2">                
+                <img src="img/interior-01.jpg" alt="Интерьер" class="tm-list-item-img tm-list-item-img-big">
+                <div class="tm-list-item-text-2">
+                  <p>GastroPlace - это современное заведение, где мы создаем уникальные гастрономические впечатления.</p>
+                  <p>Мы используем только свежие сезонные продукты и авторские рецепты от нашего шеф-повара.</p>
+                </div>                
+              </div>
+            </div>
+            <div class="tm-black-bg tm-mb-20 tm-about-box-2">              
+              <div class="tm-list-item tm-list-item-2">                
+                <div class="tm-list-item-text-2">
+                  <h2 class="tm-text-primary">Наша философия</h2>
+                  <p>Мы верим, что еда - это искусство. Каждое блюдо в нашем меню создается с любовью и вниманием к деталям.</p>                  
+                </div>                
+                <img src="img/chef-01.jpg" alt="Шеф-повар" class="tm-list-item-img tm-list-item-img-big tm-img-right">                
+              </div>
+              <p>Наша команда профессиональных поваров и барменов постоянно совершенствует меню, чтобы удивлять наших гостей.</p>
+            </div>
+          </div>
+          <!-- конец страницы О нас -->
+
+          <!-- Страница Акции -->
+          <div id="special" class="tm-page-content">
+            <div class="tm-special-items">
+                <div class="tm-black-bg tm-special-item">
+                    <div class="tm-special-item-image">
+                        <img src="img/special-01.jpg" alt="Бизнес-ланч">
+                    </div>
+                    <div class="tm-special-item-description">
+                        <h2 class="tm-text-primary tm-special-item-title">Бизнес-ланч</h2>
+                        <p class="tm-special-item-text">Специальное предложение на бизнес-ланч с 12:00 до 16:00 по будням.</p>
+                    </div>
+                </div>
+                
+                <div class="tm-black-bg tm-special-item">
+                    <div class="tm-special-item-image">
+                        <img src="img/special-02.jpg" alt="Вечеринка">
+                    </div>
+                    <div class="tm-special-item-description">
+                        <h2 class="tm-text-primary tm-special-item-title">Вечеринки</h2>
+                        <p class="tm-special-item-text">Организация банкетов и праздников для компаний до 50 человек.</p>
+                    </div>
+                </div>
+                
+                <div class="tm-black-bg tm-special-item">
+                    <div class="tm-special-item-image">
+                        <img src="img/special-03.jpg" alt="Скидка">
+                    </div>
+                    <div class="tm-special-item-description">
+                        <h2 class="tm-text-primary tm-special-item-title">Скидка 15%</h2>
+                        <p class="tm-special-item-text">Постоянным гостям предоставляется скидка 15% на все меню.</p>
+                    </div>
+                </div>
+                
+                <div class="tm-black-bg tm-special-item">
+                    <div class="tm-special-item-image">
+                        <img src="img/special-04.jpg" alt="Доставка">
+                    </div>
+                    <div class="tm-special-item-description">
+                        <h2 class="tm-text-primary tm-special-item-title">Бесплатная доставка</h2>
+                        <p class="tm-special-item-text">Бесплатная доставка при заказе от 2000 рублей в пределах города.</p>
+                    </div>
+                </div>
+                
+                <div class="tm-black-bg tm-special-item">
+                    <div class="tm-special-item-image">
+                        <img src="img/special-05.jpg" alt="Веганское мену">
+                    </div>
+                    <div class="tm-special-item-description">
+                        <h2 class="tm-text-primary tm-special-item-title">Веганское меню</h2>
+                        <p class="tm-special-item-text">Разнообразное веганское меню для наших гостей.</p>
+                    </div>
+                </div>
+                
+                <div class="tm-black-bg tm-special-item">
+                    <div class="tm-special-item-image">
+                        <img src="img/special-06.jpg" alt="Живая музыка">
+                    </div>
+                    <div class="tm-special-item-description">
+                        <h2 class="tm-text-primary tm-special-item-title">Живая музыка</h2>
+                        <p class="tm-special-item-text">По пятницам и субботам - живая музыка и специальное меню.</p>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <!-- конец страницы Акции -->
+
+          <!-- Страница Контакты -->
+          <div id="contact" class="tm-page-content">
+            <div class="tm-black-bg tm-contact-text-container">
+              <h2 class="tm-text-primary">Контакты и бронирование</h2>
+              <p>Мы всегда рады видеть вас в нашем заведении. Работаем ежедневно с 10:00 до 23:00.</p>
+              <p><strong>Телефон:</strong> +7 (XXX) XXX-XX-XX</p>
+              <p><strong>Email:</strong> info@gastoplace.ru</p>
+              <p><strong>Адрес:</strong> г. Москва, ул. Примерная, д. 123</p>
+            </div>
+            <div class="tm-black-bg tm-contact-form-container tm-align-right">
+              <form action="" method="POST" id="contact-form">
+                <div class="tm-form-group">
+                  <input type="text" name="name" class="tm-form-control" placeholder="Ваше имя" required="" />
+                </div>
+                <div class="tm-form-group">
+                  <input type="tel" name="phone" class="tm-form-control" placeholder="Телефон" required="" />
+                </div>        
+                <div class="tm-form-group">
+                  <input type="number" name="guests" class="tm-form-control" placeholder="Количество гостей" />
+                </div>
+                <div class="tm-form-group">
+                  <input type="datetime-local" name="datetime" class="tm-form-control" />
+                </div>
+                <div class="tm-form-group tm-mb-30">
+                  <textarea rows="4" name="message" class="tm-form-control" placeholder="Дополнительные пожелания"></textarea>
+                </div>        
+                <div>
+                  <button type="submit" class="tm-btn-primary tm-align-right">
+                    Забронировать стол
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- конец страницы Контакты -->
+        </main>
+      </div>    
+    </div>
+    <footer class="tm-site-footer">
+      <p class="tm-black-bg tm-footer-text">© 2025 GastroPlace
+      
+      | <a href="#" class="tm-footer-link">Шаблон сайта для ресторанов и кафе</a></p>
+    </footer>
+  </div>
+    
+  <script src="js/jquery-3.4.1.min.js"></script>    
+  <script>
+    // Упрощенный JavaScript (убраны функции для работы с видео)
+    function openTab(evt, id) {
+      $('.tm-tab-content').hide();
+      $('#' + id).show();
+      $('.tm-tab-link').removeClass('active');
+      $(evt.currentTarget).addClass('active');
+    }    
+
+    function initPage() {
+      let pageId = location.hash;
+
+      if(pageId) {
+        highlightMenu($(`.tm-page-link[href^="${pageId}"]`)); 
+        showPage($(pageId));
+      }
+      else {
+        pageId = $('.tm-page-link.active').attr('href');
+        showPage($(pageId));
+      }
+    }
+
+    function highlightMenu(menuItem) {
+      $('.tm-page-link').removeClass('active');
+      menuItem.addClass('active');
+    }
+
+    function showPage(page) {
+      $('.tm-page-content').hide();
+      page.show();
+    }
+
+    $(document).ready(function(){
+      /***************** Страницы *****************/
+      initPage();
+
+      $('.tm-page-link').click(function(event) {
+        if(window.innerWidth > 991) {
+          event.preventDefault();
+        }
+
+        highlightMenu($(event.currentTarget));
+        showPage($(event.currentTarget.hash));
+      });
+
+      /***************** Вкладки *******************/
+      $('.tm-tab-link').on('click', e => {
+        e.preventDefault(); 
+        openTab(e, $(e.target).data('id'));
+      });
+
+      $('.tm-tab-link.active').click(); // Открыть вкладку по умолчанию
+    });      
+  </script>
+</body>
+</html>
